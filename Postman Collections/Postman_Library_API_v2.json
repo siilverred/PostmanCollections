@@ -1,0 +1,376 @@
+{
+	"info": {
+		"_postman_id": "4bf52d0f-9f6f-46ac-ac73-14c251a45d0a",
+		"name": "Postman Library API v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get books",
+			"event": [
+				{
+					"id": "1b659dfa-d7a0-46e3-a1c8-7e5465e33e1a",
+					"listen": "test",
+					"script": {
+						"id": "99641a09-7edd-40ca-ab93-d7b2eeef0d14",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "5387d968-5b76-4757-a587-60b2d16126c9",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/books"
+			},
+			"response": []
+		},
+		{
+			"name": "get fiction books",
+			"event": [
+				{
+					"id": "84a5b73c-9f74-47a8-a3c6-2b2798998a5f",
+					"listen": "test",
+					"script": {
+						"id": "92ea1cb4-13c4-4423-971e-3c4cfbfd3dfe",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "66e9be62-4357-410e-ad7a-a5b9435950fa",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books?genre=fiction&checkedOut=false",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "genre",
+							"value": "fiction"
+						},
+						{
+							"key": "checkedOut",
+							"value": "false",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get book by id",
+			"event": [
+				{
+					"id": "8dabfe9c-4d41-4ac1-8006-681da491f005",
+					"listen": "test",
+					"script": {
+						"id": "81f29e83-6244-4cf6-a45a-181aa6286ac4",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "8624d3bb-9974-415a-9745-24340ad4a591",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "29cd820f-82f9-4b45-a7f4-0924111b5b89"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "202332ed-56b6-4a2a-ad00-943a20b628d1",
+						"exec": [
+							"// save the \"id\" value from the response to a variable named \"id\"\r",
+							"const id = pm.response.json().id\r",
+							"// save the id as a collection variable named \"id\"\r",
+							"pm.collectionVariables.set(\"id\", id)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "a2fc58cb-9989-4f79-a2e3-eaac2dee0fff",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"My Test Book\",\r\n  \"author\": \"Test Author\",\r\n  \"genre\": \"fiction\",\r\n  \"yearPublished\": 2024\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/books"
+			},
+			"response": []
+		},
+		{
+			"name": "checkout a book",
+			"event": [
+				{
+					"id": "2afba920-c73a-483d-9d70-30b5225391b8",
+					"listen": "test",
+					"script": {
+						"id": "acff83bf-e240-4730-9789-bd2ed75fa8d8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "73e8dc5d-4a3e-489f-a3e6-3abf0be1db8e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n  \"checkedOut\": true \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/books/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a book",
+			"event": [
+				{
+					"id": "b6d055bd-de2c-46c1-b000-adda5f6c644e",
+					"listen": "test",
+					"script": {
+						"id": "1e1161f0-1c09-4dab-96ac-240bf22b984d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "998e98b8-b96e-4fa6-9c23-93c1fc91aff1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "skillcheck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d73eab81-a6dc-4506-a336-06a2afa33a13",
+						"exec": [
+							"const response = pm.response.json();",
+							"pm.collectionVariables.set(\"favoriteActor\", response.data.actorName);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "9f75c591-78e9-4d54-bbd5-6777a6e78798",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": {
+						"value": "skillcheck",
+						"key": "student-expert"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"actorName\": \"My Favorite Actor\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{skillCheckBaseUrl}}?movieName=My Favorite Movie",
+					"host": [
+						"{{skillCheckBaseUrl}}"
+					],
+					"query": [
+						{
+							"key": "movieName",
+							"value": "My Favorite Movie"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"value": "postmanrulz",
+			"key": "api-key"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Collection-level pre-request script: Ensure baseUrl is set before any requests run",
+					"pm.test(\"baseUrl collection variable is set\", function() {",
+					"    const baseUrl = pm.collectionVariables.get(\"baseUrl\");",
+					"    if (!baseUrl || baseUrl.trim() === \"\") {",
+					"        pm.expect.fail(\"baseUrl collection variable is not set. Please set it before running the collection.\");",
+					"        pm.execution.setNextRequest(null); // Stop execution if baseUrl is missing",
+					"    }",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d2840d9a-ddfd-40f0-914e-95b2c1235465",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "skillCheckBaseUrl",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "favoriteActor",
+			"value": ""
+		},
+		{
+			"key": "deletedBookId",
+			"value": ""
+		}
+	]
+}
