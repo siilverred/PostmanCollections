@@ -1,0 +1,215 @@
+{
+	"info": {
+		"_postman_id": "33838c6f-8d69-401d-9419-de1927d57c73",
+		"name": "Collection Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "submit",
+			"id": "5f64bc3e-4807-4935-99af-290fe2d01f10",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"charlenesuhardjo@gmail.com\",\r\n  \"postmanCollectionJsonUrl\": \"{{submission}}\",\r\n  \"publishedCourseId\": \"2q2jokzsn62y8\",\r\n  \"lessonId\": \"go6mgkytvk8u\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://lesson-completion.postmanlabs.com/submit"
+			},
+			"response": []
+		},
+		{
+			"name": "Halfway Check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "01ca0fb1-e536-478f-b503-29a2bf8a7451",
+						"exec": [
+							"/** Make compatible with Postman API */\r",
+							"let body = pm.response.json()\r",
+							"\r",
+							"if (body.collection) {\r",
+							"    body = body.collection\r",
+							"}\r",
+							"\r",
+							"const reqs = body.item\r",
+							" /** 1. get books */\r",
+							"const req1 = reqs[0]\r",
+							"pm.test(\"[get books] Is a GET request\", function () {\r",
+							"    pm.expect(req1.request.method,\"Fix: Change the method to GET method\").to.equal(\"GET\");\r",
+							"});\r",
+							"\r",
+							"pm.test(`[get books] base URL is set to \\{\\{baseUrl\\}\\}`, function () {\r",
+							"    const pattern = /^{{baseUrl}}/i\r",
+							"    const url = req1.request.url.raw || req1.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Set the base URL to \"{{baseUrl}}\"`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"[get books] path is set to /books\", function () {\r",
+							"    const pattern = /\\/books$/\r",
+							"    const url = req1.request.url.raw || req1.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Path should be \"{{baseUrl}}/books\"`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"/** 2. get fiction books */\r",
+							"const req2 = reqs[1]\r",
+							"pm.test(\"[get fiction books] is a GET request\", function () {\r",
+							"    pm.expect(req2.request.method,\"Fix: Change the method to GET method\").to.equal(\"GET\");\r",
+							"});\r",
+							"    \r",
+							"pm.test(`[get fiction books] base URL is set to {{baseUrl}}`, function () {\r",
+							"    const pattern = /^{{baseUrl}}/i\r",
+							"    const url = req2.request.url.raw || req2.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Set the base URL to \"{{baseUrl}}\"`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"[get fiction books] path is set to /books\", function () {\r",
+							"    const pattern = /\\/books\\??/\r",
+							"    const url = req2.request.url.raw || req2.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Path should be \"{{baseUrl}}/books\"`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"[get fiction books] Check Query Params\", function () {\r",
+							"    const condition = req2.request.url.query.some(q => q.key === 'genre' && q.value.match(/fiction/i)) && req2.request.url.query.some(q => q.key === 'checkedOut' && q.value.match(/false/i))\r",
+							"    pm.expect(condition,`Fix: There should be 2 Query Params\r",
+							" \"genre=fiction\" and \"checkedOut=false\"`).to.equal(true);\r",
+							"});\r",
+							"\r",
+							"/** 3. get book by id */\r",
+							"const req3 = reqs[2]\r",
+							"pm.test(\"[get book by id] Is a GET request\", function () {\r",
+							"    pm.expect(req3.request.method,\"Fix: Change the method to GET method\").to.equal(\"GET\");\r",
+							"});\r",
+							"\r",
+							"pm.test(`[get book by id] base URL is set to {{baseUrl}}`, function () {\r",
+							"    const pattern = /^{{baseUrl}}/i\r",
+							"    const url = req3.request.url.raw || req3.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Set the base URL to \"{{baseUrl}}\"`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"pm.test(`[get book by id] path is set to /books/:id`, function () {\r",
+							"    const pattern = /\\/books\\/:id$/\r",
+							"    const url = req3.request.url.raw || req3.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Path should be \"{{baseUrl}}/books/:id\"`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"/** 4. add a book */\r",
+							"const req4 = reqs[3]\r",
+							"pm.test(\"[add a book] is a POST request\", function () {\r",
+							"    pm.expect(req4.request.method,\"Fix: Change the method to POST method\").to.equal(\"POST\");\r",
+							"});\r",
+							"\r",
+							"pm.test(`[add a book] Base URL is set to {{baseUrl}}`, function () {\r",
+							"    const pattern = /^{{baseUrl}}/i\r",
+							"    const url = req4.request.url.raw || req4.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Set the base Url to {{baseUrl}}`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"pm.test(`[add a book] path is set to /books`, function () {\r",
+							"    const pattern = /\\/books$/\r",
+							"    const url = req4.request.url.raw || req4.request.url\r",
+							"    pm.expect(url.trim(),`Fix: Set the base URL to \"{{baseUrl}}\"`).to.match(pattern);\r",
+							"});\r",
+							"\r",
+							"pm.test(`[add a book] has a JSON body with title, author, genre, yearPublished`, function () {\r",
+							"    const b = JSON.parse(req4.request.body.raw)\r",
+							"    pm.expect(b,`Fix: add JSON body`).to.have.property('title');\r",
+							"    pm.expect(b).to.have.property('author');\r",
+							"    pm.expect(b).to.have.property('genre');\r",
+							"    pm.expect(b).to.have.property('yearPublished');\r",
+							"});\r",
+							"\r",
+							"pm.test(`[add a book] has post-request script in Scripts tab`, function () {\r",
+							"    pm.expect(req4.event.length,\"Fix: Script is missing\").to.be.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"/** Collection */\r",
+							"pm.test(`[COLLECTION] Collection level Auth is set to API Key`, function () {\r",
+							"    console.log(body.auth)\r",
+							"    pm.expect(body.auth.type,`Fix: Set collection level auth api-key:postmanrulz`).to.equal(`apikey`);\r",
+							"    /** account for collection v2 and v2.1 schema differences for auth */\r",
+							"    if (body.auth.apikey.key) {\r",
+							"        pm.expect(body.auth.apikey.key).to.equal(`api-key`,`Fix: Set collection level auth api-key`);\r",
+							"        } else {\r",
+							"        pm.expect(body.auth.apikey.some(o => o.value === 'api-key'),`Fix: Set collection level auth api-key`).to.equal(true);\r",
+							"        }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "7cac40b1-247b-42d0-b986-b6b98945eaa5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"charlenesuhardjo@gmail.com\",\r\n  \"postmanCollectionJsonUrl\": \"{{submission}}\",\r\n  \"publishedCourseId\": \"2q2jokzsn62y8\",\r\n  \"lessonId\": \"go6mgkytvk8u\"\r\n}\r\n"
+				},
+				"url": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Final Check",
+			"id": "0547c137-b85d-40d2-88db-f30631596681",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a99b2b24-9b48-4c7f-be99-2a856f00f47e",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "b7c09e0b-406a-4797-92e8-da1d9154bcce",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "submission",
+			"value": ""
+		}
+	]
+}
